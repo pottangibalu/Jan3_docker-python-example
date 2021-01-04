@@ -1,2 +1,0 @@
-# Jan3_docker-python-example
-Auto_build_deploy_dockerimage
