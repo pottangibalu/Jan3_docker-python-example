@@ -1,7 +1,19 @@
-FROM python:3
-WORKDIR /usr/src/app
-COPY Pipfile ./
-RUN pip install --no-cache-dir pipenv==2020.11.15 && pipenv install
-COPY app.py .
-COPY tests.py .
-CMD [ "pipenv", "run", "python", "-m", "flask", "run", "--host=0.0.0.0" ]
+FROM centos
+
+MAINTAINER balu.p@hotmail.com
+
+RUN mkdir /opt/tomcat/
+
+WORKDIR /opt/tomcat
+RUN curl -O https://www-eu.apache.org/dist/tomcat/tomcat-8/v8.5.40/bin/apache-tomcat-8.5.40.tar.gz
+RUN tar xvfz apache*.tar.gz
+RUN mv apache-tomcat-8.5.40/* /opt/tomcat/.
+RUN yum -y install java
+RUN java -version
+
+WORKDIR /opt/tomcat/webapps
+RUN curl -O -L https://github.com/pottangibalu/Jan3_dockerimage/SampleWebApp.war
+
+EXPOSE 8080
+
+CMD ["/opt/tomcat/bin/catalina.sh", "run"]
